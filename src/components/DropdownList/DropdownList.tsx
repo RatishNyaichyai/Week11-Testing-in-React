@@ -29,6 +29,7 @@ export const DropdownList = ({
       <Button
         onClick={onToggleVisibility}
         label={dropdownOpened ? labels.hide : labels.show}
+
       />
 
       {dropdownOpened && (
@@ -37,7 +38,7 @@ export const DropdownList = ({
             <li key={item.value} data-testid={`dropdown-li-${item.value}`}>
               {item.label}
 
-              <button onClick={() => onRemoveItem(item, index)}>Remove</button>
+              <button onClick={() => onRemoveItem(item, index)} data-testid={`remove-button-${item.value}`}>Remove</button>
             </li>
           ))}
         </ul>

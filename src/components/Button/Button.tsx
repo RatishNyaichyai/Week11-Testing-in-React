@@ -6,7 +6,7 @@ export interface ButtonProps {
 }
 
 const Button = ({ label, onClick }: ButtonProps): ReactElement => {
-  return <button onClick={onClick}>{label}</button>;
+  return <button onClick={onClick} data-testid="button">{label}</button>;
 };
 
 export default Button;

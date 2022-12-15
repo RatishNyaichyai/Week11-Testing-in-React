@@ -1,5 +1,5 @@
 import { DropdownList, DropdownListProps } from "./DropdownList";
-import { render } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 
 const labels = {
   hide: "Hide",
@@ -26,7 +26,6 @@ const makeSut = (props: Partial<DropdownListProps>) => {
 describe("<DropdownList />", () => {
   test("Should not render ul component on initial render", () => {
     const { container } = makeSut({});
-
     expect(container.querySelector("ul")).not.toBeInTheDocument();
   });
 
@@ -37,11 +36,44 @@ describe("<DropdownList />", () => {
    * Check if all items have been rendered correctly
    * Check if the remove callback is being called with correct values
    */
-  test("Should render ul component when click on button", () => {});
+  test("Should render ul component when click on button", () => {
+    const { container } = makeSut({});
+    const showButton = screen.getByTestId("button")
+    fireEvent.click(showButton)
+    // const ul = screen.getByTestId("dropdown-ul")
+    expect(screen.getByTestId("dropdown-ul")).toBeInTheDocument();
 
-  test("Should switch button label on click", () => {});
+  });
 
-  test("Should render 3 li correctly", () => {});
+  test("Should switch button label on click", () => {
+    const { container } = makeSut({});
+    const showButton = screen.getByTestId("button")
+    fireEvent.click(showButton)
+    expect(showButton).toHaveTextContent(/Hide/i);
 
-  test("Should call onRemoveItem callback correctly", () => {});
+  });
+
+  test("Should render 3 li correctly", () => {
+    const { container } = makeSut({});
+
+    const showButton = screen.getByTestId("button")
+
+    fireEvent.click(showButton)
+
+    expect(container.querySelectorAll("li")).toHaveLength(3);
+
+  });
+
+  test("Should call onRemoveItem callback correctly", () => {
+    const spy = jest.fn();
+    const { getByTestId } = makeSut({ onRemoveItem: spy });
+
+    const showButton = screen.getByTestId("button")
+
+    fireEvent.click(showButton)
+
+    fireEvent.click(getByTestId('remove-button-1'));
+
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
 });
